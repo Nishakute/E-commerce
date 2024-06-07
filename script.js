@@ -1,58 +1,54 @@
 products = [
-    
-      {
-        id: 1,
-        productName: "face scrub",
-        discription: "hybrid cleansing face scrub with cucumber",
-        price: 200.0,
-        images:"images/skin1.jpg"
-      },
-      {
-        id: 2,
-        productName: "sunscreen",
-        discription: "soonthing gel sunscrren for dry skin",
-        price: 150.0,
-        images: "images/skin2.jpg",
-      },
-      {
-        id: 3,
-        productName: "cleanser",
-        discription: "balancing daily cleanser",
-        price: 200.0,
-        images: "images/skin3.jpg",
-      },
-      {
-        id: 4,
-        productName: "Moisturizer",
-        discription: " Hydreating gel oil",
-        price: 255.0,
-        images: "images/skin4.jpg",
-      },
-      {
-        id: 5,
-        productName: "Makeup remover",
-        discription: "cleasing oil",
-        price: 350.0,
-        images: "images/skin5.jpg",
-      },
-      {
-        id: 6,
-        productName: "face wash",
-        discription: "gel based face wash for dry skin",
-        price: 220.0,
-        images: "images/skin6.jpg",
-      },
+  {
+    id: 1,
+    productName: "face scrub",
+    discription: "hybrid cleansing face scrub with cucumber",
+    price: 200.0,
+    images: "images/skin1.jpg",
+  },
+  {
+    id: 2,
+    productName: "sunscreen",
+    discription: "soonthing gel sunscrren for dry skin",
+    price: 150.0,
+    images: "images/skin2.jpg",
+  },
+  {
+    id: 3,
+    productName: "cleanser",
+    discription: "balancing daily cleanser",
+    price: 200.0,
+    images: "images/skin3.jpg",
+  },
+  {
+    id: 4,
+    productName: "Moisturizer",
+    discription: " Hydreating gel oil",
+    price: 255.0,
+    images: "images/skin4.jpg",
+  },
+  {
+    id: 5,
+    productName: "Makeup remover",
+    discription: "cleasing oil",
+    price: 350.0,
+    images: "images/skin5.jpg",
+  },
+  {
+    id: 6,
+    productName: "face wash",
+    discription: "gel based face wash for dry skin",
+    price: 220.0,
+    images: "images/skin6.jpg",
+  },
+];
 
+showCarts = document.getElementById("showCarts");
 
-
-    ];
-    
-    showCarts = document.getElementById("showCarts");
-    
-    products.forEach((element) => {
-      rowDiv = document.createElement("div");
-      rowDiv.className = "col-3";
-      rowDiv.innerHTML = `
+products.forEach((element) => {
+  rowDiv = document.createElement("div");
+  rowDiv.className = "col-3";
+  rowDiv.innerHTML = `
                         <div class="card" style="width: 18rem; margin:50px">
                             <img src=${element.images} class="card-img-top" alt="...">
                             <div class="card-body">
@@ -63,37 +59,54 @@ products = [
                             </div>
                         </div>
         `;
-        showCarts.appendChild(rowDiv);
-    });
+  showCarts.appendChild(rowDiv);
+});
 
-    cart=[];
-    
+cart = [];
+ totalPrice = 0;
 
-    function addToCart(ID){
-        console.log(ID);
-        indexNumber= products.findIndex(element=> element.id === ID)
-        if(indexNumber != -1){
-          cart.push(products[indexNumber]);
-          console.log(cart);
-          console.log(cart.length);
-        }
-         else{
-           alert("product out of stock");
-        }
-        document.getElemetById('menuCountInCart').innerHTML= cart.length;
-    }
+function addToCart(ID) {
+  console.log(ID);
+  indexNumber = products.findIndex((element) => element.id === ID);
+  if (indexNumber != -1) {
+    cart.push(products[indexNumber]);
+    console.log(cart);
+    console.log(cart.length);
+  } else {
+    alert("product out of stock");
+  }
+  document.getElementById("menuCountInCart").innerHTML = cart.length;
+}
 
-    document.getElementById('showCartOnModal').addEventListener('click',()=>{
+document.getElementById("showCartOnModal").addEventListener("click", showProductsOnCarts);
+productInCart = document.getElementById("productsInCart");
 
-    cart.forEach((element)=>{
-      cartList=document.createElement('div')
-      cartList.innerHTML=`<div>
+function showProductsOnCarts() {
+  productInCart.innerHTML = "";
+  totalPrice = 0;
+  cart.forEach((element) => {
+    cartList = document.createElement("div");
+    cartList.innerHTML = `<div>
       <span style="font-size:bold">${element.productName}</span>
       <span>&#x20b9,${element.price}</span>
+      <button onclick='removeFromCart(${element.id})' class="btn btn-danger">Remove</button>
     </div>`;
-      document.getElementById('prdouctsInCart').appendChild(cartList);
-    })
+
+    totalPrice = totalPrice + element.price;
+    productInCart.appendChild(cartList);
   });
+  document.getElementById("totalprice").innerHTML = totalPrice;
+}
 
-
-
+function removeFromCart(ID) {
+  console.log("ID of product", ID);
+  indNo = cart.findIndex((ele) => ele.id == ID);
+  console.log("Index", indNo);
+  if (indNo != -1) {
+    console.log(indNo);
+    cart.splice(indNo, 1);
+    console.log(cart);
+  }
+  showProductsOnCarts();
+  document.getElementById("menuCountInCart").innerHTML = cart.length;
+}
